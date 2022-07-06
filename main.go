@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"net/http"
+	"os"
 )
 
 func checkError(err error) {
@@ -12,8 +13,15 @@ func checkError(err error) {
 	}
 }
 
+func writeFile(data, filename string) {
+	file, error := os.Create(filename)
+	defer file.Close()
+	checkError(error)
+
+	file.WriteString(data)
+}
+
 func main() {
-	//fmt.Println("Hi. Thats enough for first commit (:")
 
 	url := "https://megasport.msk.ru/afisha-meropriyatiy/"
 
@@ -28,7 +36,9 @@ func main() {
 	doc, error := goquery.NewDocumentFromReader(response.Body)
 	checkError(error)
 
-	elementor := doc.Find("div.elementor").Size()
+	ecs, error := doc.Find("div.ecs-posts").Html()
+	checkError(error)
 
-	fmt.Println(elementor)
+	//fmt.Println(ecs)
+	writeFile(ecs, "writeFile.html")
 }
