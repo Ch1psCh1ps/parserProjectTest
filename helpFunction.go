@@ -7,19 +7,20 @@ import (
 	"os"
 )
 
-/*Это файл для помощи с поиском нужных строк на сайте и отдельной функции по поиску ошибок*/
-func writeFile(data, filename string) {
-	file, error := os.Create(filename)
-	defer file.Close()
-	checkError(error)
+/*Это файл для помощи с поиском нужных строк на сайте/
 
-	file.WriteString(data)
-}
-
-func checkError(err error) {
+/*func CheckError(err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
+}*/
+
+func writeFile(data, filename string) {
+	file, error := os.Create(filename)
+	defer file.Close()
+	CheckError(error)
+
+	file.WriteString(data)
 }
 
 func main() {
@@ -28,7 +29,7 @@ func main() {
 
 	response, error := http.Get(url)
 	defer response.Body.Close()
-	checkError(error)
+	CheckError(error)
 
 	if response.StatusCode > 400 {
 		fmt.Println("Status code:", response.StatusCode)
@@ -37,7 +38,7 @@ func main() {
 	doc, error := goquery.NewDocumentFromReader(response.Body)
 
 	ecs, error := doc.Find("div.ecs-posts").Html()
-	checkError(error)
+	CheckError(error)
 
 	writeFile(ecs, "writeFile.html")
 }
