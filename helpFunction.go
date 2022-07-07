@@ -36,6 +36,6 @@ func help(url string) {
 	writeFile(ecs, "writeFile.html")
 }
 
-/*func main() {
+func main() {
 	help("https://megasport.msk.ru/afisha-meropriyatiy/")
-}*/
+}
