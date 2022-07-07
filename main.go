@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"log"
 	"net/http"
 )
 
@@ -13,9 +15,9 @@ func CheckError(err error) {
 }
 
 type Post struct {
-	titles string `json:"titles"`
-	urls   string `json:"urls"`
-	term   string `json:"term"`
+	Title string `json:"title"`
+	Url   string `json:"url"`
+	Term  string `json:"term"`
 }
 
 func main() {
@@ -38,6 +40,8 @@ func main() {
 
 	//writer := csv.NewWriter(file)
 
+	var posts []Post
+
 	doc.Find("div.ecs-posts").Find("div.elementor-section-wrap").Each(func(index int, item *goquery.Selection) {
 		h3 := item.Find("h3")
 
@@ -45,22 +49,14 @@ func main() {
 		url, _ := h3.Find("a").Attr("href")
 		term := item.Find("div.elementor-text-editor").Text()
 
-		posts := []Post{
-			{
-				titles: title,
-				urls:   url,
-				term:   term,
-			},
-		}
-
-		fmt.Println(posts)
-
-		//j, _ := json.Marshal(posts)
-
-		//log.Println(string(j))
-		//writer.Write(posts)
+		posts = append(posts, Post{
+			Title: title,
+			Url:   url,
+			Term:  term,
+		})
 	})
 
-	//writer.Flush()
+	j, _ := json.Marshal(posts)
 
+	log.Println(string(j))
 }
