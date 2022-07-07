@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"net/http"
+	"parserProjectTest/lib"
 	"strings"
 )
 
@@ -20,14 +21,14 @@ func main() {
 
 	response, error := http.Get(url)
 	defer response.Body.Close()
-	CheckError(error)
+	lib.CheckError(error)
 
 	if response.StatusCode > 400 {
 		fmt.Println("Status code:", response.StatusCode)
 	}
 
 	doc, error := goquery.NewDocumentFromReader(response.Body)
-	CheckError(error)
+	lib.CheckError(error)
 
 	var posts []Post
 
