@@ -2,20 +2,17 @@ package main
 
 import (
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"net/http"
-	"os"
 )
 
-/*Это файл для помощи с поиском нужных строк на сайте/
+//Это файл для помощи с поиском нужных строк на сайте и функции проверки ошибки
 
-/*func CheckError(err error) {
+func CheckError(err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
-}*/
+}
 
-func writeFile(data, filename string) {
+/*func writeFile(data, filename string) {
 	file, error := os.Create(filename)
 	defer file.Close()
 	CheckError(error)
@@ -23,9 +20,7 @@ func writeFile(data, filename string) {
 	file.WriteString(data)
 }
 
-func main() {
-
-	url := "https://megasport.msk.ru/afisha-meropriyatiy/"
+func help(url string) {
 
 	response, error := http.Get(url)
 	defer response.Body.Close()
@@ -42,3 +37,7 @@ func main() {
 
 	writeFile(ecs, "writeFile.html")
 }
+*/
+/*func main() {
+	help("https://megasport.msk.ru/afisha-meropriyatiy/")
+}*/
