@@ -1,25 +1,12 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"net/http"
 	"os"
 )
-
-func checkError(err error) {
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
-func writeFile(data, filename string) {
-	file, error := os.Create(filename)
-	defer file.Close()
-	checkError(error)
-
-	file.WriteString(data)
-}
 
 func main() {
 
@@ -36,9 +23,23 @@ func main() {
 	doc, error := goquery.NewDocumentFromReader(response.Body)
 	checkError(error)
 
-	ecs, error := doc.Find("div.ecs-posts").Html()
+	file, error := os.Create("posts.csv")
 	checkError(error)
 
-	//fmt.Println(ecs)
-	writeFile(ecs, "writeFile.html")
+	writer := csv.NewWriter(file)
+
+	doc.Find("div.ecs-posts").Find("div.elementor-section-wrap").Each(func(index int, item *goquery.Selection) {
+		h3 := item.Find("h3")
+		title := h3.Text()
+		url, _ := h3.Find("a").Attr("href")
+
+		time := item.Find("div.elementor-text-editor").Text()
+
+		posts := []string{title, url, time}
+
+		writer.Write(posts)
+	})
+
+	writer.Flush()
+
 }
